@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class FPSController : MonoBehaviour
@@ -10,8 +11,7 @@ public class FPSController : MonoBehaviour
     public float runSpeed = 12f;
     public float jumpPower = 7f;
     public float gravity = 10f;
-
-
+    public int KeyAmount;
     public float lookSpeed = 2f;
     public float lookXLimit = 45f;
 
@@ -75,5 +75,25 @@ public class FPSController : MonoBehaviour
         }
 
         #endregion
+    }
+    private void PlayerDeath()
+    {
+        SceneManager.LoadScene("SampleScene");
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Hubo contacto");
+        if (collision.gameObject.layer == 7)
+        {
+            PlayerDeath();
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Key"))
+        {
+            KeyAmount += 1;
+            Destroy(other.gameObject);
+        }
     }
 }
